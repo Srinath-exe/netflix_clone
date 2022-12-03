@@ -1,4 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:netflix_clone/constants/buttons.dart';
+import 'package:netflix_clone/constants/constants.dart';
+import 'package:netflix_clone/controller/AuthController.dart';
+import 'package:otp_text_field/otp_text_field.dart';
+import 'package:otp_text_field/style.dart';
 // import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -9,53 +17,19 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  final AuthController controller = Get.find();
+  bool wait = false;
   @override
   Widget build(BuildContext context) {
-    // final defaultPinTheme = PinTheme(
-    //   width: 56,
-    //   height: 56,
-    //   textStyle: const TextStyle(
-    //       fontSize: 20,
-    //       color: Color.fromRGBO(30, 60, 87, 1),
-    //       fontWeight: FontWeight.w600),
-    //   decoration: BoxDecoration(
-    //     border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
-    //     borderRadius: BorderRadius.circular(20),
-    //   ),
-    // );
-
-    // final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-    //   border: Border.all(color: const Color.fromRGBO(114, 178, 238, 1)),
-    //   borderRadius: BorderRadius.circular(8),
-    // );
-
-    // final submittedPinTheme = defaultPinTheme.copyWith(
-    //   decoration: defaultPinTheme.decoration?.copyWith(
-    //     color: const Color.fromRGBO(234, 239, 243, 1),
-    //   ),
-    // );
-
     return Scaffold(
+      backgroundColor: white,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.black,
-          ),
-        ),
-        elevation: 0,
-      ),
       body: Container(
         margin: const EdgeInsets.only(left: 25, right: 25),
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Image.asset(
                 'assets/images/img1.png',
@@ -73,38 +47,43 @@ class _OtpScreenState extends State<OtpScreen> {
                 height: 10,
               ),
               const Text(
-                "We need to register your phone without getting started!",
+                "Enter your OTP code number",
                 style: TextStyle(
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
-                height: 30,
+                height: 60,
               ),
-              // Pinput(
-              //   length: 6,
-              //   // defaultPinTheme: defaultPinTheme,
-              //   // focusedPinTheme: focusedPinTheme,
-              //   // submittedPinTheme: submittedPinTheme,
-
-              //   showCursor: true,
-              //   onCompleted: (pin) => print(pin),
-              // ),
+              OTPTextField(
+                length: 6,
+                width: MediaQuery.of(context).size.width * 0.8,
+                fieldWidth: 40,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                outlineBorderRadius: 50,
+                style: TextStyle(
+                    fontSize: 20, color: black, fontWeight: FontWeight.w600),
+                textFieldAlignment: MainAxisAlignment.spaceAround,
+                fieldStyle: FieldStyle.underline,
+                otpFieldStyle: OtpFieldStyle(
+                    enabledBorderColor: black, focusBorderColor: black),
+                onChanged: (pin) {},
+                onCompleted: (pin) {
+                  controller.otp.value = pin;
+                },
+              ),
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 45,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.green.shade600,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () {},
-                    child: const Text("Verify Phone Number")),
-              ),
+              ThemeButton(
+                  width: Config().deviceWidth(context) * 0.8,
+                  height: 60,
+                  onTap: () {
+                    // Nav().goTo(const OtpScreen(), context);
+                  },
+                  text: "Verify"),
               Row(
                 children: [
                   TextButton(
@@ -114,7 +93,28 @@ class _OtpScreenState extends State<OtpScreen> {
                         style: TextStyle(color: Colors.black),
                       ))
                 ],
-              )
+              ),
+              Obx(
+                () => controller.isOtpSent.value
+                    ? TextButton(
+                        style: ButtonStyle(),
+                        onPressed: () => controller.resendOTP.value
+                            ? controller.resendOtp()
+                            : null,
+                        child: Text(
+                          controller.resendOTP.value
+                              ? "Resend New Code"
+                              : "Wait ${controller.resendAfter} seconds",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey.shade500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    : Container(),
+              ),
             ],
           ),
         ),
