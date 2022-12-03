@@ -13,6 +13,8 @@ class AuthController extends GetxController
   var isLogin = true;
   var phoneNo = "".obs;
   var otp = "".obs;
+  var isLoading = false.obs;
+  var isInvalid = false.obs;
   var isOtpSent = false.obs;
   var resendAfter = 30.obs;
   var resendOTP = false.obs;
@@ -37,7 +39,6 @@ class AuthController extends GetxController
       codeSent: (String verificationId, int? resendToken) {
         firebaseVerificationId = verificationId;
         isOtpSent.value = true;
-        statusMessage.value = "OTP sent to +91${phoneNo.value}";
         startResendOtpTimer();
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
@@ -53,28 +54,32 @@ class AuthController extends GetxController
       codeSent: (String verificationId, int? resendToken) {
         firebaseVerificationId = verificationId;
         isOtpSent.value = true;
-        statusMessage.value = "OTP re-sent to +91${phoneNo.value}";
         startResendOtpTimer();
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 
-  verifyOTP() async {
+  Future<bool> verifyOTP() async {
+    isLoading.value = true;
+    isInvalid.value = false;
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
-      statusMessage.value = "Verifying... ${otp.value}";
       // Create a PhoneAuthCredential with the code
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: firebaseVerificationId, smsCode: otp.value);
       // Sign the user in (or link) with the credential
-      await auth.signInWithCredential(credential);
+      var user = await auth.signInWithCredential(credential);
+      isLoading.value = false;
 
       return true;
     } catch (e) {
+      isLoading.value = false;
       log("LOGIN ERROR : $e");
+      isInvalid.value = true;
       statusMessage.value = "Invalid  OTP";
       statusMessageColor = Colors.red.obs;
+      return false;
     }
   }
 

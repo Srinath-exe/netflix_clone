@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Obx(() => TextFormField(
                       initialValue: authController.phoneNo.value,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.phone,
                       maxLength: 10,
                       style: const TextStyle(
                         fontSize: 18,
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       final form = _formKey.currentState;
                       if (form!.validate()) {
                         form.save();
-                        // authController.getOtp();
+                        authController.getOtp();
                         Nav().goTo(const OtpScreen(), context);
                       }
                     },
