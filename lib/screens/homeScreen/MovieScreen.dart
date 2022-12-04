@@ -71,13 +71,14 @@ class _SearchScreenState extends State<MovieScreen> {
                       return retry();
                     }
                     return GridView(
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2, childAspectRatio: 0.68),
-                      children: !controller.isLoading.value
+                      children: !controller.isLoading.value ||
+                              controller.mainMovieList.isNotEmpty
                           ? controller.mainMovieList
                               .map((e) => MovieCard(movie: e))
                               .toList()
@@ -95,7 +96,7 @@ class _SearchScreenState extends State<MovieScreen> {
   retry() {
     return Container(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(
+        const Text(
           "Connection reset by peer",
           style: TextStyle(fontSize: 20),
         ),
@@ -107,7 +108,7 @@ class _SearchScreenState extends State<MovieScreen> {
           height: 50,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           child: OutlinedButton(
-            child: Text('Retry'),
+            child: const Text('Retry'),
             style: OutlinedButton.styleFrom(
               foregroundColor: black,
               shape: BeveledRectangleBorder(

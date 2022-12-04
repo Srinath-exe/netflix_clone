@@ -48,6 +48,7 @@ class _MyAppState extends State<MyApp> {
     final MovieController movieController = Get.put(MovieController());
     return MaterialApp(
         title: 'Movie App',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           platform: TargetPlatform.iOS,
           fontFamily: 'Montserrat',

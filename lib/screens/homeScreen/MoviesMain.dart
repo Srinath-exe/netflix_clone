@@ -44,7 +44,7 @@ class _MoviesMainState extends State<MoviesMain> {
                       switchInCurve: Curves.easeInOut,
                       duration: const Duration(milliseconds: 200),
                       child: Container(
-                        key: Key(controller.mainMovieList[curr].backdropPath),
+                        key: Key(controller.mainMovieList[curr].id.toString()),
                         width: Config().deviceWidth(context),
                         height: Config().deviceHeight(context) * 0.6,
                         decoration: BoxDecoration(
@@ -52,7 +52,7 @@ class _MoviesMainState extends State<MoviesMain> {
                           fit: BoxFit.fitWidth,
                           image: CachedNetworkImageProvider(
                             imagebaseULR +
-                                controller.mainMovieList[curr].backdropPath,
+                                controller.topMoviesList[curr].backdropPath!,
                             errorListener: () {},
                           ),
                         )),
@@ -110,7 +110,7 @@ class _MoviesMainState extends State<MoviesMain> {
                       items: List.generate(
                           controller.mainMovieList.length,
                           (index) =>
-                              OvalCard(movie: controller.mainMovieList[index])),
+                              OvalCard(movie: controller.topMoviesList[index])),
                     ),
                   ),
                 ),
@@ -120,16 +120,3 @@ class _MoviesMainState extends State<MoviesMain> {
         )));
   }
 }
-
-// CarouselSlider(
-//         carouselController: controller,
-//         options: CarouselOptions(
-//             height: 600.0,
-//             clipBehavior: Clip.none,
-//             autoPlay: false,
-//             enlargeCenterPage: true,
-//             enlargeStrategy: CenterPageEnlargeStrategy.scale,
-//             viewportFraction: 0.8),
-//         items: List.generate(
-//             newList.length, (index) => OvalCard(movie: newList[index])),
-//       ),

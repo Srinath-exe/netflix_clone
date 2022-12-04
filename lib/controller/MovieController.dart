@@ -34,13 +34,11 @@ class MovieController extends GetxController {
     hasSimilarMovie = false.obs;
     similarMovies.value = [];
     isMovieDetailLoading.value = true;
-    // while(similarMovies.isEmpty) {
-    //   similarMovies.value = await movieRepo.getUpcomingMovie();
-    // }
+
     movieDetail.value =
         await MovieDetailRepository().getMovieDetails(movie_id: id);
     similarMovies.value = await movieRepo.getSimilarMovie(movie_id: id);
-    
+
     log(similarMovies.toString());
     if (similarMovies.isNotEmpty) {
       hasSimilarMovie = true.obs;
@@ -51,43 +49,31 @@ class MovieController extends GetxController {
   void fetchMovies() async {
     isLoading.value = true;
     isSearch.value = false;
+    int count = 0;
 
     while (topMoviesList.isEmpty) {
+      count++;
       topMoviesList.value = await movieRepo.getTopRatesMovie();
+    }
+    mainMovieList.value = topMoviesList;
 
-      log("topMoviesList");
-    }
-    if (topMoviesList.isNotEmpty) {
-      mainMovieList.value = topMoviesList;
-    }
     while (popularmoviesList.isEmpty) {
+      count++;
       popularmoviesList.value = await movieRepo.getPopularMovie();
     }
     while (theaterMoviesList.isEmpty) {
+      count++;
       theaterMoviesList.value = await movieRepo.getNowplayingMovie();
     }
     while (upcomingmoviesList.isEmpty) {
+      count++;
       upcomingmoviesList.value = await movieRepo.getUpcomingMovie();
     }
-
+    log("COUNT :  $count");
     log("FETCH COMPLETE");
 
     isLoading.value = false;
   }
-
-  // void fetchMovies() async {
-  //   isLoading.value = true;
-  //   isSearch.value = false;
-
-  //   topMoviesList.value = await movieRepo.getTopRatesMovie();
-
-  //   popularmoviesList.value = await movieRepo.getPopularMovie();
-  //   theaterMoviesList.value = await movieRepo.getNowplayingMovie();
-  //   upcomingmoviesList.value = await movieRepo.getUpcomingMovie();
-  //   log("FETCH COMPLETE");
-
-  //   isLoading.value = false;
-  // }
 
   void showTopRelated(int id) {
     noSearchresult.value = false;
