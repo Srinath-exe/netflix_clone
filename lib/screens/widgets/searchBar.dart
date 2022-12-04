@@ -22,6 +22,7 @@ class Custom_SearchStateBar extends State<CustomSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       child: CustomTextField(
           name: "Search",
           focus: focus,

@@ -34,56 +34,62 @@ class _SearchScreenState extends State<MovieScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: secondary,
-        body: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.only(top: 0.0, bottom: 4),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 12,
-              ),
-              CustomSearchBar(
-                controller: searchController,
-                onSubmit: (s) {
-                  print(s);
-                  controller.searchMovies(query: s);
-                },
-                onClose: () {
-                  log("message");
-                  controller.searchMovies(query: "");
-                  controller.showTopRelated(0);
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              chips(),
-              Expanded(child: Center(
-                child: Obx(() {
-                  if (controller.noSearchresult.value == true) {
-                    return const NotFound();
-                  }
-                  // if (controller.isLoading.value == false &&
-                  //     controller.mainMovieList.isEmpty) {
-                  //   return retry();
-                  // }
-                  return GridView(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 0.68),
-                    children: !controller.isLoading.value
-                        ? controller.mainMovieList
-                            .map((e) => MovieCard(movie: e))
-                            .toList()
-                        : List.generate(4, (index) => const MovieShimmerCard()),
-                  );
-                }),
-              )),
-            ],
-          ),
-        )));
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: Padding(
+            padding: const EdgeInsets.only(top: 0.0, bottom: 4),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 12,
+                ),
+                CustomSearchBar(
+                  controller: searchController,
+                  onSubmit: (s) {
+                    print(s);
+                    controller.searchMovies(query: s);
+                  },
+                  onClose: () {
+                    log("message");
+                    controller.searchMovies(query: "");
+                    controller.showTopRelated(0);
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                chips(),
+                Container(child: Center(
+                  child: Obx(() {
+                    if (controller.noSearchresult.value == true) {
+                      return const NotFound();
+                    }
+                    if (controller.isLoading.value == false &&
+                        controller.noSearchresult.value == false &&
+                        controller.mainMovieList.isEmpty) {
+                      return retry();
+                    }
+                    return GridView(
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, childAspectRatio: 0.68),
+                      children: !controller.isLoading.value
+                          ? controller.mainMovieList
+                              .map((e) => MovieCard(movie: e))
+                              .toList()
+                          : List.generate(
+                              4, (index) => const MovieShimmerCard()),
+                    );
+                  }),
+                )),
+              ],
+            ),
+          )),
+        ));
   }
 
   retry() {

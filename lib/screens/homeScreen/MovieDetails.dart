@@ -47,8 +47,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       // height: Config().deviceHeight(context) * 0.22,
                       fit: BoxFit.fitWidth,
                       placeholder: (context, url) => Lottie.asset(
-                          'assets/lottie/newsload.json',
-                          width: 80,
+                          'assets/lottie/movieLoad.json',
+                          width: 120,
                           reverse: false,
                           repeat: false),
                     ),
@@ -361,8 +361,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 height: 60,
                 fit: BoxFit.contain,
                 placeholder: (context, url) => Lottie.asset(
-                    'assets/lottie/newsload.json',
-                    width: 80,
+                    'assets/lottie/movieLoad.json',
+                    width: 120,
                     reverse: false,
                     repeat: false),
                 errorWidget: (context, url, error) {

@@ -10,6 +10,7 @@ import 'package:netflix_clone/constants/constants.dart';
 import 'package:netflix_clone/controller/MovieController.dart';
 import 'package:netflix_clone/models/sample_data.dart';
 import 'package:netflix_clone/screens/widgets/OvalCard.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class MoviesMain extends StatefulWidget {
   const MoviesMain({super.key});
@@ -40,7 +41,7 @@ class _MoviesMainState extends State<MoviesMain> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   AnimatedSwitcher(
-                      switchInCurve: Curves.bounceInOut,
+                      switchInCurve: Curves.easeInOut,
                       duration: const Duration(milliseconds: 200),
                       child: Container(
                         key: Key(controller.mainMovieList[curr].backdropPath),
@@ -71,7 +72,10 @@ class _MoviesMainState extends State<MoviesMain> {
                         ),
                       ),
                       transitionBuilder: (child, animation) {
-                        return FadeTransition(opacity: animation, child: child);
+                        return FadeTransition(
+                            alwaysIncludeSemantics: true,
+                            opacity: animation,
+                            child: child);
                       }),
                 ],
               ),
@@ -84,14 +88,14 @@ class _MoviesMainState extends State<MoviesMain> {
               //     ))),
               Positioned(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 100.0),
+                  padding: const EdgeInsets.only(bottom: 40.0),
                   child: SizedBox(
                     height: 600,
                     child: CarouselSlider(
                       carouselController: carouselController,
                       options: CarouselOptions(
                           autoPlayAnimationDuration:
-                              Duration(milliseconds: 2000),
+                              const Duration(milliseconds: 2000),
                           onPageChanged: (i, r) {
                             setState(() {
                               curr = i;
@@ -110,7 +114,7 @@ class _MoviesMainState extends State<MoviesMain> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         )));

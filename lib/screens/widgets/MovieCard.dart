@@ -61,8 +61,8 @@ class _MovieCardState extends State<MovieCard> {
                       width: Config().deviceWidth(context) * 0.4,
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Lottie.asset(
-                          'assets/lottie/newsload.json',
-                          width: 80,
+                          'assets/lottie/movieLoad.json',
+                          width: 120,
                           reverse: false,
                           repeat: false),
                       errorWidget: (context, url, error) {
