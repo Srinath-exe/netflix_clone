@@ -149,10 +149,28 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     return count;
                   }
 
-                  if (controller.isMovieDetailLoading.value ||
-                      controller.movieDetail.value == null) {
+                  if (controller.isMovieDetailLoading.value) {
                     return CircularProgressIndicator(
                       color: black,
+                    );
+                  }
+                  if (controller.movieDetail.value == null) {
+                    return Container(
+                      width: 160,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: OutlinedButton(
+                        child: const Text('Retry'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: black,
+                          shape: BeveledRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        onPressed: () {
+                          controller.getMovieDetails(widget.m1.id.toString());
+                        },
+                      ),
                     );
                   }
                   return Column(
