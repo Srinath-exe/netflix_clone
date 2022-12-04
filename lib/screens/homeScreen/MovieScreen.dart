@@ -23,21 +23,11 @@ class MovieScreen extends StatefulWidget {
 class _SearchScreenState extends State<MovieScreen> {
   final MovieController controller = Get.find();
 
-  ScrollController scrol = ScrollController()..addListener(() {});
+  ScrollController scrol = ScrollController();
   TextEditingController searchController = TextEditingController();
-  onend() {
-    scrol.addListener(() {
-      if (scrol.offset >= (scrol.position.maxScrollExtent - 400) &&
-          controller.isSearch.value == false) {
-        log("fetching More");
-        // controller.fetchMoreMovies();
-      }
-    });
-  }
 
   @override
   void initState() {
-    onend();
     super.initState();
   }
 
@@ -74,10 +64,10 @@ class _SearchScreenState extends State<MovieScreen> {
                   if (controller.noSearchresult.value == true) {
                     return const NotFound();
                   }
-                  if (!controller.isLoading.value &&
-                      controller.mainMovieList.isEmpty) {
-                    return retry();
-                  }
+                  // if (controller.isLoading.value == false &&
+                  //     controller.mainMovieList.isEmpty) {
+                  //   return retry();
+                  // }
                   return GridView(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     gridDelegate:

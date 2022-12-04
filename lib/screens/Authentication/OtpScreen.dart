@@ -114,7 +114,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               if (controller.otp.value.length == 6) {
                                 var loggedin = await controller.verifyOTP();
                                 if (loggedin) {
-                                  Nav().goTo(const MoviesMain(), context);
+                                  Navigator.pop(context);
                                   log("LOGGED IN SUCCESSFULLY");
                                 }
                               }

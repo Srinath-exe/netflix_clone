@@ -11,6 +11,8 @@ class MovieController extends GetxController {
   var isSearch = false.obs;
   var noSearchresult = false.obs;
   var isMovieDetailLoading = false.obs;
+  var hasSimilarMovie = false.obs;
+  var similarMovies = <MoviesModel>[].obs;
   final movieDetail = Rxn<MoviesDetailsModel>();
   var mainMovieList = <MoviesModel>[].obs;
   var topMoviesList = <MoviesModel>[].obs;
@@ -29,31 +31,63 @@ class MovieController extends GetxController {
 
   void getMovieDetails(String id) async {
     movieDetail.value = null;
+    hasSimilarMovie = false.obs;
+    similarMovies.value = [];
     isMovieDetailLoading.value = true;
-
+    // while(similarMovies.isEmpty) {
+    //   similarMovies.value = await movieRepo.getUpcomingMovie();
+    // }
     movieDetail.value =
         await MovieDetailRepository().getMovieDetails(movie_id: id);
+    similarMovies.value = await movieRepo.getSimilarMovie(movie_id: id);
+    
+    log(similarMovies.toString());
+    if (similarMovies.isNotEmpty) {
+      hasSimilarMovie = true.obs;
+    }
     isMovieDetailLoading.value = false;
   }
 
   void fetchMovies() async {
     isLoading.value = true;
     isSearch.value = false;
-    var movies = await movieRepo.getTopRatesMovie();
-    if (movies != []) {
-      mainMovieList.value = movies;
-      topMoviesList.value = movies;
 
-      isLoading.value = false;
+    while (topMoviesList.isEmpty) {
+      topMoviesList.value = await movieRepo.getTopRatesMovie();
+
+      log("topMoviesList");
     }
-    log("getTopRatesMovie");
+    if (topMoviesList.isNotEmpty) {
+      mainMovieList.value = topMoviesList;
+    }
+    while (popularmoviesList.isEmpty) {
+      popularmoviesList.value = await movieRepo.getPopularMovie();
+    }
+    while (theaterMoviesList.isEmpty) {
+      theaterMoviesList.value = await movieRepo.getNowplayingMovie();
+    }
+    while (upcomingmoviesList.isEmpty) {
+      upcomingmoviesList.value = await movieRepo.getUpcomingMovie();
+    }
 
-    popularmoviesList.value = await movieRepo.getPopularMovie();
-    theaterMoviesList.value = await movieRepo.getNowplayingMovie();
-    upcomingmoviesList.value = await movieRepo.getUpcomingMovie();
     log("FETCH COMPLETE");
+
     isLoading.value = false;
   }
+
+  // void fetchMovies() async {
+  //   isLoading.value = true;
+  //   isSearch.value = false;
+
+  //   topMoviesList.value = await movieRepo.getTopRatesMovie();
+
+  //   popularmoviesList.value = await movieRepo.getPopularMovie();
+  //   theaterMoviesList.value = await movieRepo.getNowplayingMovie();
+  //   upcomingmoviesList.value = await movieRepo.getUpcomingMovie();
+  //   log("FETCH COMPLETE");
+
+  //   isLoading.value = false;
+  // }
 
   void showTopRelated(int id) {
     noSearchresult.value = false;
@@ -76,11 +110,6 @@ class MovieController extends GetxController {
         break;
     }
     isLoading.value = false;
-  }
-
-  void fetchTopRated() async {
-    var movies = await movieRepo.getTopRatesMovie();
-    log(movies.toString());
   }
 
   void searchMovies({required String query}) async {
@@ -125,5 +154,17 @@ class MovieController extends GetxController {
     }
 
     isLoading.value = false;
+  }
+
+  void getSimilar(String id) async {
+    hasSimilarMovie = false.obs;
+    similarMovies.value = await movieRepo.getSimilarMovie(movie_id: id);
+    // while(similarMovies.isEmpty) {
+    //   similarMovies.value = await movieRepo.getUpcomingMovie();
+    // }
+    log(similarMovies.toString());
+    if (similarMovies.isNotEmpty) {
+      hasSimilarMovie = true.obs;
+    }
   }
 }

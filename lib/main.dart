@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,8 +17,31 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var isLogin = false;
+  var auth = FirebaseAuth.instance;
+  checkLogin() async {
+    auth.authStateChanges().listen((User? user) {
+      if (user != null && mounted) {
+        setState(() {
+          isLogin = true;
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    checkLogin();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +59,6 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        home: MainPage());
+        home: isLogin ? MainPage() : const LoginScreen());
   }
 }

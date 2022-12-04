@@ -11,6 +11,7 @@ import 'package:netflix_clone/constants/constants.dart';
 import 'package:netflix_clone/controller/MovieController.dart';
 import 'package:netflix_clone/models/MovieDetailsModel.dart';
 import 'package:netflix_clone/models/MoviesModel.dart';
+import 'package:netflix_clone/screens/widgets/MovieCard.dart';
 import 'package:number_slide_animation/number_slide_animation.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
@@ -150,7 +151,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
                   if (controller.isMovieDetailLoading.value ||
                       controller.movieDetail.value == null) {
-                    return const CircularProgressIndicator();
+                    return CircularProgressIndicator(
+                      color: black,
+                    );
                   }
                   return Column(
                     children: [
@@ -263,6 +266,39 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               ],
                             )
                           : Container(),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Obx(() => controller.hasSimilarMovie.value
+                          ? Column(
+                              children: [
+                                title("Similar Movies"),
+                                Container(
+                                  // height: Config().deviceHeight(context),
+                                  child: GridView(
+                                      physics: ClampingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20),
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              childAspectRatio: 0.68),
+                                      children: List.generate(
+                                          controller.similarMovies.length,
+                                          (index) => MovieCard(
+                                              movie: controller
+                                                  .similarMovies[index]))),
+                                )
+                                // Wrap(
+                                //     children: List.generate(
+                                //         controller.similarMovies.length,
+                                //         (index) => MovieCard(
+                                //             movie: controller
+                                //                 .similarMovies[index])))
+                              ],
+                            )
+                          : Container())
                     ],
                   );
                 }),

@@ -87,40 +87,44 @@ class _MovieCardState extends State<MovieCard> {
                 Positioned(
                     right: 0,
                     top: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(120),
-                        gradient: LinearGradient(
-                          colors: [
-                            widget.movie.voteAverage > 5
-                                ? Colors.green
-                                : Colors.red.shade400,
-                            Colors.black
-                          ],
-                          begin: const Alignment(-1, -1),
-                          end: const Alignment(4, 2),
-                        ),
-                        // color: black,
-                        // border: Border.all(),
-                        // shape: BoxShape.circle,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: black,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              widget.movie.voteAverage.toString(),
-                              style: TextStyle(color: white),
+                    child: widget.movie.voteAverage != 0
+                        ? Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(120),
+                              gradient: LinearGradient(
+                                colors: [
+                                  widget.movie.voteAverage > 5
+                                      ? Colors.green
+                                      : Colors.red.shade400,
+                                  Colors.black
+                                ],
+                                begin: const Alignment(-1, -1),
+                                end: const Alignment(4, 2),
+                              ),
+                              // color: black,
+                              // border: Border.all(),
+                              // shape: BoxShape.circle,
                             ),
-                          ),
-                        ),
-                      ),
-                    ))
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: black,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    widget.movie.voteAverage
+                                        .toPrecision(1)
+                                        .toString(),
+                                    style: TextStyle(color: white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container())
               ],
             ),
           ),

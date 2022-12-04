@@ -19,8 +19,6 @@ class AuthController extends GetxController
   var resendAfter = 30.obs;
   var resendOTP = false.obs;
   var firebaseVerificationId = "";
-  var statusMessage = "".obs;
-  var statusMessageColor = Colors.black.obs;
 
   var timer;
 
@@ -65,11 +63,9 @@ class AuthController extends GetxController
     isInvalid.value = false;
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
-      // Create a PhoneAuthCredential with the code
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: firebaseVerificationId, smsCode: otp.value);
-      // Sign the user in (or link) with the credential
-      var user = await auth.signInWithCredential(credential);
+      await auth.signInWithCredential(credential);
       isLoading.value = false;
 
       return true;
@@ -77,8 +73,6 @@ class AuthController extends GetxController
       isLoading.value = false;
       log("LOGIN ERROR : $e");
       isInvalid.value = true;
-      statusMessage.value = "Invalid  OTP";
-      statusMessageColor = Colors.red.obs;
       return false;
     }
   }

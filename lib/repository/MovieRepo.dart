@@ -109,29 +109,4 @@ class MovieRepository {
       return [];
     }
   }
-
-// sfadddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-
-  // Future<List<MovieModel>> searchMovie({required String search}) async {
-  //   final response = await API.get(
-  //       url:
-  //           'https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=${search}&api-key=${APIKEY}');
-  //   var res = json.decode(response.body);
-  //   if (res["results"] == null) {
-  //     return [];
-  //   }
-  //   List<MovieModel> lis = [];
-  //   List.generate(
-  //       res["num_results"],
-  //       (index) => {
-  //             if (res["results"][index]["multimedia"] != null)
-  //               {lis.add(MovieModel.fromJson(res["results"][index]))}
-  //           });
-
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     return lis;
-  //   } else {
-  //     return [];
-  //   }
-  // }
 }
