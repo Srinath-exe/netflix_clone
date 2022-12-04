@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:lottie/lottie.dart';
+import 'package:netflix_clone/constants/buttons.dart';
 import 'package:netflix_clone/constants/constants.dart';
 import 'package:netflix_clone/controller/MovieController.dart';
 import 'package:netflix_clone/screens/widgets/MovieCard.dart';
@@ -72,13 +74,16 @@ class _SearchScreenState extends State<MovieScreen> {
                   if (controller.noSearchresult.value == true) {
                     return const NotFound();
                   }
-                  ;
+                  if (!controller.isLoading.value &&
+                      controller.mainMovieList.isEmpty) {
+                    return retry();
+                  }
                   return GridView(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2, childAspectRatio: 0.68),
-                    children: controller.mainMovieList.isNotEmpty
+                    children: !controller.isLoading.value
                         ? controller.mainMovieList
                             .map((e) => MovieCard(movie: e))
                             .toList()
@@ -89,6 +94,36 @@ class _SearchScreenState extends State<MovieScreen> {
             ],
           ),
         )));
+  }
+
+  retry() {
+    return Container(
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text(
+          "Connection reset by peer",
+          style: TextStyle(fontSize: 20),
+        ),
+        Lottie.asset(
+          'assets/lottie/error.json',
+        ),
+        Container(
+          width: 160,
+          height: 50,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+          child: OutlinedButton(
+            child: Text('Retry'),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: black,
+              shape: BeveledRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+            onPressed: () {
+              controller.retryMovie();
+            },
+          ),
+        )
+      ]),
+    );
   }
 
   int selected = 0;

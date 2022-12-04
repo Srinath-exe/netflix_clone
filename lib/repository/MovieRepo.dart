@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:netflix_clone/constants/constants.dart';
+import 'package:netflix_clone/controller/MovieController.dart';
 import 'package:netflix_clone/models/MoviesModel.dart';
 import 'package:netflix_clone/repository/Repository..dart';
 
 class MovieRepository {
-  // final MovieController controller = Get.put(MovieController());
-
   Future<List<MoviesModel>> getTopRatesMovie() async {
     try {
       final response = await API.get(
@@ -91,8 +90,6 @@ class MovieRepository {
       }
     } catch (e) {
       log("popular error : $e");
-      // controller.popularmoviesList.value =
-      //     await MovieRepository().getPopularMovie();
       return [];
     }
   }

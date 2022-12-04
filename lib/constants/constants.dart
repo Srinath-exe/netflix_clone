@@ -19,7 +19,7 @@ class Config {
 Color secondary = Colors.white;
 Color accent = const Color(0xffA8FF35);
 
-Color grey = const Color(0xff171717);
+Color grey = const Color(0xff1E1E1E);
 Color black = Colors.black;
 Color white = Colors.white;
 Color lightgrey = Colors.grey.shade200;

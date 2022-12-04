@@ -52,6 +52,7 @@ class MovieController extends GetxController {
     theaterMoviesList.value = await movieRepo.getNowplayingMovie();
     upcomingmoviesList.value = await movieRepo.getUpcomingMovie();
     log("FETCH COMPLETE");
+    isLoading.value = false;
   }
 
   void showTopRelated(int id) {
@@ -82,30 +83,6 @@ class MovieController extends GetxController {
     log(movies.toString());
   }
 
-  // void fetchHomeMovies() async {
-  //   isLoading.value = false;
-  //   isSearch.value = false;
-  //   var movies = await movieRepo.getMovie();
-  //   if (movies != []) {
-  //     moviesList.value = movies;
-  //     page.value++;
-  //     isLoading.value = true;
-  //   }
-  // }
-
-  // void fetchMoreMovies() async {
-  //   isLoading.value = false;
-  //   isSearch.value = false;
-  //   var movies = await movieRepo.getMovie(page: page.value);
-  //   if (movies != []) {
-  //     moviesList.addAll(movies);
-  //     moviesList.sentToStream;
-  //     isLoading.value = true;
-  //   }
-
-  //   page.value = moviesList.value.length + 20;
-  // }
-
   void searchMovies({required String query}) async {
     isLoading.value = true;
     noSearchresult.value = false;
@@ -124,5 +101,29 @@ class MovieController extends GetxController {
         isSearch.value = false;
       }
     }
+  }
+
+  void retryMovie() async {
+    isLoading.value = true;
+    if (topMoviesList.isEmpty) {
+      topMoviesList.value = await movieRepo.getTopRatesMovie();
+      log("topMoviesList");
+    }
+    if (popularmoviesList.isEmpty) {
+      popularmoviesList.value = await movieRepo.getPopularMovie();
+
+      log("popularmoviesList");
+    }
+    if (theaterMoviesList.isEmpty) {
+      theaterMoviesList.value = await movieRepo.getNowplayingMovie();
+
+      log("theaterMoviesList");
+    }
+    if (upcomingmoviesList.isEmpty) {
+      upcomingmoviesList.value = await movieRepo.getUpcomingMovie();
+      log("upcomingmoviesList");
+    }
+
+    isLoading.value = false;
   }
 }

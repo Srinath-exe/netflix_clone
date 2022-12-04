@@ -10,6 +10,7 @@ import 'package:netflix_clone/repository/Repository..dart';
 
 class MovieDetailRepository {
   final MovieController controller = Get.find();
+
   Future<MoviesDetailsModel?> getMovieDetails(
       {required String movie_id}) async {
     try {

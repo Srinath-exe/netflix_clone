@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:netflix_clone/controller/MovieController.dart';
 import 'package:netflix_clone/screens/Authentication/loginScreen.dart';
+import 'package:netflix_clone/screens/MainScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MovieController movieController = Get.put(MovieController());
     return MaterialApp(
         title: 'Movie App',
         theme: ThemeData(
@@ -31,6 +35,6 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        home: const LoginScreen());
+        home: MainPage());
   }
 }

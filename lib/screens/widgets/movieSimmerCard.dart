@@ -24,12 +24,13 @@ class _MovieShimmerCardState extends State<MovieShimmerCard> {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(0.0),
+            padding: const EdgeInsets.all(10.0),
             child: Stack(
               children: [
                 Shimmer(
                   loop: 0,
-                  period: const Duration(milliseconds: 4000),
+                  enabled: true,
+                  period: const Duration(milliseconds: 10000),
                   gradient: LinearGradient(colors: [lightgrey, lightgrey]),
                   child: Column(children: [
                     Material(

@@ -13,7 +13,6 @@ import 'package:netflix_clone/models/MovieDetailsModel.dart';
 import 'package:netflix_clone/models/MoviesModel.dart';
 import 'package:number_slide_animation/number_slide_animation.dart';
 
-
 class MovieDetailsScreen extends StatefulWidget {
   // MoviesDetailsModel movie;
 
@@ -33,7 +32,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     return Scaffold(
       backgroundColor: white,
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(parent: ClampingScrollPhysics()),
+        physics: const BouncingScrollPhysics(parent: ClampingScrollPhysics()),
         child: Stack(
           children: [
             Column(
@@ -151,7 +150,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
                   if (controller.isMovieDetailLoading.value ||
                       controller.movieDetail.value == null) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                   return Column(
                     children: [
@@ -170,52 +169,78 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       title(controller.movieDetail.value!.overview,
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w400)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 20),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                infoUI(
-                                  "Revenue",
-                                  MoneyFormatter(
-                                    amount: controller
-                                                .movieDetail.value!.revenue ==
-                                            0
-                                        ? 10000000
-                                        : controller.movieDetail.value!.revenue
-                                            .toDouble(),
-                                  ).output.compactSymbolOnLeft,
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 280,
+                        decoration: BoxDecoration(
+                            color: grey,
+                            image: const DecorationImage(
+                                image: AssetImage(
+                                  'assets/images/backdrop.png',
                                 ),
-                                infoUI(
-                                  "Budget",
-                                  MoneyFormatter(
-                                    amount: controller.movieDetail.value!.budget
-                                        .toDouble(),
-                                  ).output.compactSymbolOnLeft,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                infoUI(
-                                    "Release Date",
-                                    formatDate(
-                                        controller
-                                            .movieDetail.value!.releaseDate,
-                                        [d, ' ', M, '\' ', yy])),
-                                infoUI(
-                                    "Runtime",
-                                    controller.movieDetail.value!.runtime
-                                            .toString() +
-                                        " min"),
-                              ],
-                            ),
-                          ],
+                                fit: BoxFit.cover)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 30.0, horizontal: 20),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  infoUI(
+                                    "Revenue",
+                                    MoneyFormatter(
+                                      amount: controller
+                                                  .movieDetail.value!.revenue ==
+                                              0
+                                          ? 10000000
+                                          : controller
+                                              .movieDetail.value!.revenue
+                                              .toDouble(),
+                                    ).output.compactSymbolOnLeft,
+                                  ),
+                                  infoUI(
+                                    "Budget",
+                                    MoneyFormatter(
+                                      amount: controller
+                                          .movieDetail.value!.budget
+                                          .toDouble(),
+                                    ).output.compactSymbolOnLeft,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  infoUI(
+                                      "Release Date",
+                                      formatDate(
+                                          controller
+                                              .movieDetail.value!.releaseDate,
+                                          [d, ' ', M, '\' ', yy])),
+                                  infoUI("Runtime",
+                                      "${controller.movieDetail.value!.runtime} min"),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
+                      ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       companyCount() > 0
                           ? Column(
@@ -331,14 +356,16 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  fontSize: 12, fontWeight: FontWeight.w500, color: grey),
             ),
             const SizedBox(
               height: 4,
             ),
             Text(
               data,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.w600, color: grey),
             )
           ],
         ),
