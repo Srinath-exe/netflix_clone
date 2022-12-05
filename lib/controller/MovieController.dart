@@ -34,12 +34,16 @@ class MovieController extends GetxController {
     hasSimilarMovie = false.obs;
     similarMovies.value = [];
     isMovieDetailLoading.value = true;
+    int count = 0;
+    while (movieDetail.value == null) {
+      count++;
+      log(count.toString());
+      movieDetail.value =
+          await MovieDetailRepository().getMovieDetails(movie_id: id);
+    }
 
-    movieDetail.value =
-        await MovieDetailRepository().getMovieDetails(movie_id: id);
     similarMovies.value = await movieRepo.getSimilarMovie(movie_id: id);
 
-    log(similarMovies.toString());
     if (similarMovies.isNotEmpty) {
       hasSimilarMovie = true.obs;
     }

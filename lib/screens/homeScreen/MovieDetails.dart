@@ -136,14 +136,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   int companyCount() {
                     int count = 0;
                     List.generate(
-                        controller.movieDetail.value!.productionCompanies
+                        controller.movieDetail.value!.productionCompanies!
                             .length, (index) {
                       if (controller.movieDetail.value!
-                              .productionCompanies[index].logoPath !=
+                              .productionCompanies![index].logoPath !=
                           null) {
                         count++;
                         productionCompanieslist.add(controller
-                            .movieDetail.value!.productionCompanies[index]);
+                            .movieDetail.value!.productionCompanies![index]);
                       }
                     });
                     return count;
@@ -180,14 +180,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(
-                              controller.movieDetail.value!.genres.length,
-                              (index) => chips(
-                                  controller.movieDetail.value!.genres[index])),
+                              controller.movieDetail.value!.genres!.length,
+                              (index) => chips(controller
+                                  .movieDetail.value!.genres![index])),
                         ),
                       ),
                       title("\" ${controller.movieDetail.value!.tagline} \""),
                       title("Overview"),
-                      title(controller.movieDetail.value!.overview,
+                      title(controller.movieDetail.value!.overview!,
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w400)),
                       const SizedBox(
@@ -222,7 +222,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                               0
                                           ? 10000000
                                           : controller
-                                              .movieDetail.value!.revenue
+                                              .movieDetail.value!.revenue!
                                               .toDouble(),
                                     ).output.compactSymbolOnLeft,
                                   ),
@@ -230,7 +230,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     "Budget",
                                     MoneyFormatter(
                                       amount: controller
-                                          .movieDetail.value!.budget
+                                          .movieDetail.value!.budget!
                                           .toDouble(),
                                     ).output.compactSymbolOnLeft,
                                   ),
@@ -250,7 +250,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       "Release Date",
                                       formatDate(
                                           controller
-                                              .movieDetail.value!.releaseDate,
+                                              .movieDetail.value!.releaseDate!,
                                           [d, ' ', M, '\' ', yy])),
                                   infoUI("Runtime",
                                       "${controller.movieDetail.value!.runtime} min"),
@@ -374,7 +374,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CachedNetworkImage(
-                imageUrl: imagebaseULR + comp.logoPath,
+                imageUrl: imagebaseULR + comp.logoPath!,
                 width: 60,
                 height: 60,
                 fit: BoxFit.contain,
@@ -389,7 +389,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               ),
             ),
             Text(
-              comp.name,
+              comp.name!,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
             ),

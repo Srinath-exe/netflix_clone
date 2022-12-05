@@ -13,31 +13,22 @@ class MovieDetailRepository {
 
   Future<MoviesDetailsModel?> getMovieDetails(
       {required String movie_id}) async {
-    try {
-      final response = await API.get(
-        url:
-            'https://api.themoviedb.org/3/movie/${movie_id}?api_key=${movieAPIKEY}',
-        onCatch: (e) {
-          log("Movie Detail ERROR : $e");
-          log("2nd req sent");
-          if (e.toString() == "Connection reset by peer") {
-            controller.getMovieDetails(movie_id);
-          }
-        },
-      );
+    final response = await API.get(
+      url:
+          'https://api.themoviedb.org/3/movie/${movie_id}?api_key=${movieAPIKEY}',
+      // onCatch: (e) {
+      //   log("Movie Detail ERROR : $e");
+      //   log("2nd req sent");
+      //   // if (e.toString() == "Connection reset by peer") {
+      //   controller.getMovieDetails(movie_id);
+      //   // }
+      // },
+    );
 
-      if (response != null) {
-        var movieDetails = moviesDetailsModelFromJson(response.body);
-        return movieDetails;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      log("Movie Detail ERROR : $e");
-      log("2nd req sent");
-      if (e.toString() == "Connection reset by peer") {
-        controller.getMovieDetails(movie_id);
-      }
+    if (response != null) {
+      var movieDetails = moviesDetailsModelFromJson(response.body);
+      return movieDetails;
+    } else {
       return null;
     }
   }
